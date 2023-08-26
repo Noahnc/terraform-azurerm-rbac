@@ -56,10 +56,15 @@ jobs:
         id: calculate_version
         with:
           script: |
-            const latestRelease = context.payload.repository.releases[0];
+            let latestReleaseVersion;
+            if (context.payload.repository.releases === undefined) {
+              latestReleaseVersion = 'v0.0.0';
+            } else {
+              latestReleaseVersion = context.payload.repository.releases[0].tag_name;
+            }
+            const versionNumber = latestReleaseVersion.substring(1);
             const labels = context.payload.pull_request.labels;
-            const version = latestRelease.tag_name;
-            const versionParts = version.split('.');
+            const versionParts = versionNumber.split('.');
             const major = parseInt(versionParts[0]);
             const minor = parseInt(versionParts[1]);
             const patch = parseInt(versionParts[2]);
