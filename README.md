@@ -1,6 +1,7 @@
 # Azure RBAC-Policy
 
-Module to assign RBAC roles to principal_ids or a AzureAD security group.
+Module for assigning azure rbac role definitions. The module allows you to assign multiple role_definitions over multiple scopes to multiple principle_ids or a single security group.
+The module is therefore highly flexible and can be used to create lots of rbac rules at once.
 
 ## Requirements
 
@@ -11,7 +12,7 @@ In order for the module to be able to create AzureAD security groups, the User c
 
 ## Example
 
-The following example assigns the role "Contributor" to the principal with the id <principal_id> on the specified resource group:
+The following example creates a security group and assigns it the roles "Contributor" and "Reader" over the scope of a resource group:
 
 ```bash
 module "example_rbac_security_group" {
@@ -22,7 +23,7 @@ module "example_rbac_security_group" {
   }
   azuread_security_group = {
     name    = "test_rbac"
-    member_upns = ["peter.muster@cmiag.ch", "hans.muster@cmiag.ch"]
+    member_upns = ["peter.muster@example.ch", "hans.muster@example.ch"]
   }
   role_definitions = ["Contributor", "Reader"]
 }
@@ -56,7 +57,7 @@ module "example_rbac_include_sub_group" {
   }
   azuread_security_group = {
     name    = "test_rbac_include"
-    member_upns = ["peter.muster@cmiag.ch", "hans.muster@cmiag.ch"]
+    member_upns = ["peter.muster@example.ch", "hans.muster@example.ch"]
     member_object_ids = [module.example_rbac_security_group.azuread_security_group_object_id]
   }
   role_definitions = ["KeyVautl Administrator"]
