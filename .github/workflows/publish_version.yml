@@ -74,7 +74,6 @@ jobs:
               throw new Error('No label found');
             }
             core.setOutput('new_version', newVersion);
-            core.setOutput('version', version);
 
       - name: Publish release
         uses: softprops/action-gh-release@v1
