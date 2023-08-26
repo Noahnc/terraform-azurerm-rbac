@@ -5,7 +5,7 @@ The module is therefore highly flexible and can be used to create lots of rbac r
 
 ## Requirements
 
-In order for the module to be able to create AzureAD security groups, the User creating the security group must have the following permissions in AzureAD:
+In order for the module to be able to create AzureAD security groups, the user used by azurerm needs the following permissions in AzureAD:
 
 - Group.ReadWrite.All
 - Directory.ReadWrite.All
@@ -16,8 +16,8 @@ The following example creates a security group and assigns it the roles "Contrib
 
 ```bash
 module "example_rbac_security_group" {
-  source = "spacelift.io/cminformatik/azure_security_rbac_policy/azure"
-  version = "2.0.0"
+  source  = "Noahnc/rbac/azurerm"
+  version = "1.0.1"
   scopes = {
     rg = <ressource_group_id>
   }
@@ -33,8 +33,8 @@ The following example assigns the role "DNS Zone Contributor" to a managed ident
 
 ```bash
 module "example_rbac_prinicpal_ids" {
-  source = "spacelift.io/cminformatik/azure_security_rbac_policy/azure"
-  version = "2.0.0"
+  source  = "Noahnc/rbac/azurerm"
+  version = "1.0.1"
   scopes = {
     subscription_1 = <subscription_id1>
     subscription_2 = <subscription_id2>
@@ -50,8 +50,8 @@ It is also possible to assign roles to the security group created within another
 
 ```bash
 module "example_rbac_include_sub_group" {
-  source = "spacelift.io/cminformatik/azure_security_rbac_policy/azure"
-  version = "2.0.0"
+  source  = "Noahnc/rbac/azurerm"
+  version = "1.0.1"
   scopes = {
     subscription_1 = <subscription_id1>
   }
@@ -63,3 +63,5 @@ module "example_rbac_include_sub_group" {
   role_definitions = ["KeyVautl Administrator"]
 }
 ```
+
+> **_NOTE:_** The Key of the `scopes` and `principal_ids` map can be freely chosen, they are only used to generate unique terraform for_each keys.
