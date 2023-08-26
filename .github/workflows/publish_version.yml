@@ -34,8 +34,7 @@ jobs:
             } else if (labels.some(label => label.name === 'patch')) {
               console.log('PR will bump patch version');
             } else {
-              console.log('No label found, please add one of the following labels to the PR: major, minor, patch');
-              exit(1);
+              core.setFailed('No label found, please add one of the following labels to the PR: major, minor, patch');
             }
 
   publish_version:
