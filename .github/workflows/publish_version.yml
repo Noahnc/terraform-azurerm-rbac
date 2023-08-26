@@ -46,6 +46,8 @@ jobs:
   publish_version:
     runs-on: ubuntu-latest
     needs: check_lable
+    permissions:
+      contents: write
     if: github.event.pull_request.merged == true
     steps:
       - name: Checkout code
