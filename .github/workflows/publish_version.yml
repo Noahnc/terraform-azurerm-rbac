@@ -2,6 +2,12 @@ name: Terraform Format Check
 
 on:
   pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+      - labeled
     branches:
       - main
 
