@@ -48,7 +48,7 @@ jobs:
     needs: check_lable
     permissions:
       contents: write
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == false
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -60,9 +60,11 @@ jobs:
           script: |
             let latestReleaseVersion;
             if (context.payload.repository.releases === undefined) {
+              console.log('No releases found, using v0.0.0 as latest release version');
               latestReleaseVersion = 'v0.0.0';
             } else {
               latestReleaseVersion = context.payload.repository.releases[0].tag_name;
+              console.log(`Latest release version is ${latestReleaseVersion}`);
             }
             const versionNumber = latestReleaseVersion.substring(1);
             const labels = context.payload.pull_request.labels;
@@ -70,7 +72,6 @@ jobs:
             const major = parseInt(versionParts[0]);
             const minor = parseInt(versionParts[1]);
             const patch = parseInt(versionParts[2]);
-            let newVersion = '';
             if (labels.some(label => label.name === 'major')) {
               newVersion = `${major + 1}.0.0`;
             } else if (labels.some(label => label.name === 'minor')) {
