@@ -20,13 +20,23 @@ jobs:
 
   check_lable:
     runs-on: ubuntu-latest
-    depends-on: terraform_format_check
+    needs: terraform_format_check
     steps:
-      - name: Check if the PR has required lables set
-        if: not(contains(github.event.pull_request.labels.*.name, 'major')) && not(contains(github.event.pull_request.labels.*.name, 'minor')) && not(contains(github.event.pull_request.labels.*.name, 'patch'))
-        run: |
-          echo "Please add set one of the following labels to the PR: major, minor, patch"
-          exit 1
+      - name: Check lables
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const labels = context.payload.pull_request.labels;
+            if (labels.some(label => label.name === 'major')) {
+              console.log('PR will bump major version');
+            } else if (labels.some(label => label.name === 'minor')) {
+              console.log('PR will bump minor version');
+            } else if (labels.some(label => label.name === 'patch')) {
+              console.log('PR will bump patch version');
+            } else {
+              console.log('No label found, please add one of the following labels to the PR: major, minor, patch');
+              exit(1);
+            }
 
   publish_version:
     runs-on: ubuntu-latest
