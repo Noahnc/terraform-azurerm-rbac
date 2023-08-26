@@ -85,5 +85,5 @@ jobs:
       - name: Publish release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: "v.${{ steps.calculate_version.outputs.new_version }}"
+          tag_name: "v${{ steps.calculate_version.outputs.new_version }}"
           generate_release_notes: true
