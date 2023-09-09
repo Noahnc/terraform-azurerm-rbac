@@ -64,4 +64,16 @@ module "example_rbac_include_sub_group" {
 }
 ```
 
+The Input for Scopes and principal_ids can also be generated with for loops on the fly:
+
+```bash
+module "example_rbac_prinicpal_ids" {
+  source  = "Noahnc/rbac/azurerm"
+  version = "1.0.1"
+  scopes = {for key, value in azurerm_subscription.main : value.name => value.id}
+  principal_ids = {for key, value in azurerm_user_assigned_identity.main : value.name => value.principal_id}
+  role_definitions = ["DNS Zone Contributor", "Reader"]
+}
+```
+
 > **_NOTE:_** The Key of the `scopes` and `principal_ids` map can be freely chosen, they are only used to generate unique terraform for_each keys.
