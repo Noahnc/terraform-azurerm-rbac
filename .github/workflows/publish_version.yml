@@ -24,6 +24,11 @@ jobs:
       - name: Check Terraform format
         run: terraform fmt -check -recursive
 
+      - name: Run tests
+        run: |
+          terraform init
+          terraform test
+
   check_lable:
     runs-on: ubuntu-latest
     needs: terraform_format_check
